@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.hrservice.hr.mapper.StudentMapper" >
+    <resultMap id="StudentTeachers" type="com.example.hrservice.hr.model.Student">
+        <!--复杂属性，需要单独处理
+            对象：association 例如 private Teacher teacher
+            集合：collection  例如 private List<Student> student
+        -->
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <!-- column 属性指定的列中检索数据，作为参数传递给目标 select 语句 此种写法会导致N+1问题
+        官 方文档之所以不建议使用这种嵌套的select语句的形式，是因为这会导致所谓的“N+1问题”。
+        这个问题，无论是association元素还是 collection元素都会遇到
+        -->
+        <association property="teacher" column="tid" javaType="com.example.hrservice.hr.model.Teacher"
+                     select="getTeacher"/>
+    </resultMap>
+    <resultMap id="StudentTeachers2" type="com.example.hrservice.hr.model.Student">
+        <result column="sid" property="id"/>
+        <result column="sname" property="name"/>
+        <association property="teacher" javaType="com.example.hrservice.hr.model.Teacher">
+            <result column="tname" property="name"/>
+        </association>
+    </resultMap>
+ <select id="getStudents" resultMap="StudentTeachers">
+     select * from student
+ </select>
+    <select id="getTeacher" resultType="com.example.hrservice.hr.model.Teacher">
+        select * from teacher where id=#{id}
+    </select>
+    <select id="getStudents2" resultMap="StudentTeachers2">
+        select s.id sid, s. name sname, t. name tname from student s,teacher t where s.tid = t.id
+    </select>
+
+    <select id="getStudentInfo" parameterType="map" resultType="com.example.hrservice.hr.model.Student">
+        select * from student
+        where 1=1
+        <if test="name!=null">
+            and  name=#{name}
+        </if>
+        <if test="id!=null">
+            and id=#{id}
+        </if>
+    </select>
+
+    <select id="getStudentInfor" resultType="com.example.hrservice.hr.model.Student">
+        select * from student
+        <where>
+            <foreach collection="ids" item="id" open="(" separator="or" close=")">
+                id=#{id}
+            </foreach>
+        </where>
+    </select>
+  <insert id="save" useGeneratedKeys="false">
+      insert into student(id,name,tid)
+      values
+       <foreach collection="list" item="list" separator=",">
+           (#{list.id},#{list.name},#{list.tid})
+       </foreach>
+
+  </insert>
+</mapper>
