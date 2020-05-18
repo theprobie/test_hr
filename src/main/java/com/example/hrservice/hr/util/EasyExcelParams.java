@@ -11,10 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @author WuKun
- * @since 2019/10/14
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
