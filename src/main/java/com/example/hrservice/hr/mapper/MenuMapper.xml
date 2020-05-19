@@ -17,7 +17,7 @@
   </resultMap>
   <resultMap id="Menu2" type="com.example.hrservice.hr.model.Menu" extends="BaseResultMap">
     <collection property="children" ofType="com.example.hrservice.hr.model.Menu">
-      <id column="id" property="id" jdbcType="INTEGER" />
+      <id column="id2" property="id" jdbcType="INTEGER" />
       <result column="url2" property="url" jdbcType="VARCHAR" />
       <result column="path2" property="path" jdbcType="VARCHAR" />
       <result column="component2" property="component" jdbcType="VARCHAR" />
