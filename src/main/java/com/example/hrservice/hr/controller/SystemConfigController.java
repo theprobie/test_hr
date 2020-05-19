@@ -14,6 +14,7 @@ import java.util.List;
 public class SystemConfigController {
     @Autowired
     Menuservice menuservice;
+    //此接口是根据用户角色查询菜单与HelloController中的/menu不一样
     @GetMapping("/menu")
     public List<Menu> getMenusById(){
         return menuservice.getMenusById();
