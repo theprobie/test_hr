@@ -1,5 +1,7 @@
 package com.example.hrservice.hr.model;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.util.List;
 
 public class Menu {
@@ -15,10 +17,13 @@ public class Menu {
 
     private String iconCls;
 
+    @TableField(exist = false)
     private Meta meta;
 
+    @TableField(exist = false)
     private List<Menu> children;
 
+    @TableField(exist = false)
     private List<Role> roles;
 
     private Integer parentId;

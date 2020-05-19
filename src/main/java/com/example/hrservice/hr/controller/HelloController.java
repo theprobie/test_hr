@@ -6,10 +6,7 @@ import com.example.hrservice.hr.config.UpLoadStudentListener;
 import com.example.hrservice.hr.config.UploadDataListener;
 import com.example.hrservice.hr.mapper.StudentMapper;
 import com.example.hrservice.hr.model.*;
-import com.example.hrservice.hr.service.DepartService;
-import com.example.hrservice.hr.service.StudentService;
-import com.example.hrservice.hr.service.TeacherService;
-import com.example.hrservice.hr.service.UserService;
+import com.example.hrservice.hr.service.*;
 import com.example.hrservice.hr.util.EasyExcelUtil;
 import com.example.hrservice.hr.util.JsonUtils;
 import com.example.hrservice.hr.util.RedisUtil;
@@ -47,6 +44,9 @@ public class HelloController {
 
     @Autowired
     StudentMapper studentMapper;
+
+    @Autowired
+    Menuservice menuservice;
 
 //    @Autowired
 //    private JsonUtils jsonUtils;
@@ -182,7 +182,7 @@ public class HelloController {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-        String fileName = URLEncoder.encode(LocalDate.now()+"测试", "UTF-8");
+        String fileName = URLEncoder.encode(LocalDate.now() + "测试", "UTF-8");
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), Student.class).sheet("模板").doWrite(data());
 
@@ -211,12 +211,22 @@ public class HelloController {
     }
 
     @PostMapping("/readExcel")
-    public RespBean readExcel(@RequestParam MultipartFile excel)  {
+    public RespBean readExcel(@RequestParam MultipartFile excel) {
         List<ErrRows> errRows = EasyExcelUtil.readExcel(excel, UpLoadStudent.class, new UpLoadStudentListener(studentService));
         log.info("/*------- 错误的行号数为 :  {}-------*/", JSON.toJSONString(errRows));
-       if(errRows.size()==0){
-           return RespBean.ok("excel批量插入成功");
-       }
-       return RespBean.error("excel批量插入失败");
+        if (errRows.size() == 0) {
+            return RespBean.ok("excel批量插入成功");
+        }
+        return RespBean.error("excel批量插入失败");
+    }
+
+    //递归查询所有菜单的子菜单
+    @GetMapping("/menu")
+    public RespBean getMenuByMpP() {
+        List<Menu> menus = menuservice.getMenuByMP();
+        if(menus.size()>0){
+            return RespBean.ok("查询成功",menus);
+        }
+        return RespBean.error("查询失败");
     }
 }
