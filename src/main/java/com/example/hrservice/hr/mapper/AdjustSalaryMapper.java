@@ -1,6 +1,7 @@
 package com.example.hrservice.hr.mapper;
 
 import com.example.hrservice.hr.model.AdjustSalary;
+import org.apache.ibatis.annotations.Param;
 
 public interface AdjustSalaryMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,6 @@ public interface AdjustSalaryMapper {
     int updateByPrimaryKeySelective(AdjustSalary record);
 
     int updateByPrimaryKey(AdjustSalary record);
+
+
 }

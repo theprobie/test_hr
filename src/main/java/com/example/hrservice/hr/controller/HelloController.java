@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.example.hrservice.hr.config.UpLoadStudentListener;
 import com.example.hrservice.hr.config.UploadDataListener;
+import com.example.hrservice.hr.mapper.MenuMapper;
 import com.example.hrservice.hr.mapper.StudentMapper;
 import com.example.hrservice.hr.mapper.TeacherMapper;
 import com.example.hrservice.hr.model.*;
@@ -13,6 +14,8 @@ import com.example.hrservice.hr.util.JsonUtils;
 import com.example.hrservice.hr.util.RedisUtil;
 import com.example.hrservice.hr.util.RespBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -51,6 +54,9 @@ public class HelloController {
 
     @Autowired
     TeacherMapper teacherMapper;
+
+    @Autowired
+    MenuMapper menuMapper;
 
 
 //    @Autowired
@@ -248,5 +254,22 @@ public class HelloController {
             return RespBean.ok("插入成功");
         }
         return RespBean.error("插入失败");
+    }
+
+    /**
+     * mubatis 分页查询
+     * @param pn
+     * @return
+     */
+
+    @GetMapping ("/pageHelper")
+    public RespBean pageHelper(@RequestParam(value = "pn" ,defaultValue = "1") Integer pn){
+        PageHelper.startPage(pn,5);
+        List<Menu> menus = menuMapper.selectList(null);
+        if(!StringUtils.isEmpty(menus)){
+            PageInfo<Menu> menuPageInfo = new PageInfo<>(menus);
+            return RespBean.ok("分页查询成功",menuPageInfo);
+        }
+       return RespBean.error("查询失败");
     }
 }
