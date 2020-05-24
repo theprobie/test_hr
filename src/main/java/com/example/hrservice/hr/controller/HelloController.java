@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.hrservice.hr.config.UpLoadStudentListener;
 import com.example.hrservice.hr.config.UploadDataListener;
 import com.example.hrservice.hr.mapper.StudentMapper;
+import com.example.hrservice.hr.mapper.TeacherMapper;
 import com.example.hrservice.hr.model.*;
 import com.example.hrservice.hr.service.*;
 import com.example.hrservice.hr.util.EasyExcelUtil;
@@ -47,6 +48,10 @@ public class HelloController {
 
     @Autowired
     Menuservice menuservice;
+
+    @Autowired
+    TeacherMapper teacherMapper;
+
 
 //    @Autowired
 //    private JsonUtils jsonUtils;
@@ -228,5 +233,15 @@ public class HelloController {
             return RespBean.ok("查询成功",menus);
         }
         return RespBean.error("查询失败");
+    }
+
+    @PostMapping("/insertTeacher")
+    public RespBean InsertStudent(@RequestBody Teacher teacher){
+        int i = teacherMapper.insert(teacher);
+        if(i==1){
+            System.out.println(teacher.getId());
+            return RespBean.ok("插入成功");
+        }
+        return RespBean.error("插入失败");
     }
 }
