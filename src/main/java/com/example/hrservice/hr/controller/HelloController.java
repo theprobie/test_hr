@@ -235,6 +235,11 @@ public class HelloController {
         return RespBean.error("查询失败");
     }
 
+    /**
+     * mybatis plus 主键回填
+     * @param teacher
+     * @return
+     */
     @PostMapping("/insertTeacher")
     public RespBean InsertStudent(@RequestBody Teacher teacher){
         int i = teacherMapper.insert(teacher);
