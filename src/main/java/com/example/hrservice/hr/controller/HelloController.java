@@ -268,7 +268,7 @@ public class HelloController {
         List<Menu> menus = menuMapper.selectList(null);
         if(!StringUtils.isEmpty(menus)){
             PageInfo<Menu> menuPageInfo = new PageInfo<>(menus);
-            return RespBean.ok("分页查询成功",menuPageInfo);
+            return RespBean.ok("分页查询成功！",menuPageInfo);
         }
        return RespBean.error("查询失败");
     }

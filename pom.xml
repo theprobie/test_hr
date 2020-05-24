@@ -60,7 +60,7 @@
             <version>2.1.2</version>
         </dependency>
 
-        <!--mapper-->
+        <!--mapper不知道是啥-->
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
