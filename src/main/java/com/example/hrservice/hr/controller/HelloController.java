@@ -235,21 +235,22 @@ public class HelloController {
     @GetMapping("/menu")
     public RespBean getMenuByMpP() {
         List<Menu> menus = menuservice.getMenuByMP();
-        if(menus.size()>0){
-            return RespBean.ok("查询成功",menus);
+        if (menus.size() > 0) {
+            return RespBean.ok("查询成功", menus);
         }
         return RespBean.error("查询失败");
     }
 
     /**
      * mybatis plus 主键回填
+     *
      * @param teacher
      * @return
      */
     @PostMapping("/insertTeacher")
-    public RespBean InsertStudent(@RequestBody Teacher teacher){
+    public RespBean InsertStudent(@RequestBody Teacher teacher) {
         int i = teacherMapper.insert(teacher);
-        if(i==1){
+        if (i == 1) {
             System.out.println(teacher.getId());
             return RespBean.ok("插入成功");
         }
@@ -258,18 +259,77 @@ public class HelloController {
 
     /**
      * mubatis 分页查询
+     *
      * @param pn
      * @return
      */
 
-    @GetMapping ("/pageHelper")
-    public RespBean pageHelper(@RequestParam(value = "pn" ,defaultValue = "1") Integer pn){
-        PageHelper.startPage(pn,5);
+    @GetMapping("/pageHelper")
+    public RespBean pageHelper(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
+        PageHelper.startPage(pn, 5);
         List<Menu> menus = menuMapper.selectList(null);
-        if(!StringUtils.isEmpty(menus)){
+        if (!StringUtils.isEmpty(menus)) {
             PageInfo<Menu> menuPageInfo = new PageInfo<>(menus);
-            return RespBean.ok("分页查询成功！",menuPageInfo);
+            return RespBean.ok("分页查询成功！", menuPageInfo);
         }
-       return RespBean.error("查询失败");
+        return RespBean.error("查询失败");
+    }
+
+    /**
+     * @param pn显示第几页
+     * @param pg每页显示条数
+     * @return
+     */
+    @GetMapping("/pageHelperNew")
+    public RespBean pageHelperNew(@RequestParam(value = "pn", defaultValue = "1") Integer pn,
+                                  @RequestParam(value = "pg", defaultValue = "5") Integer pg) {
+        PageHelper.startPage(pn, pg);
+        List<Menu> menus = menuMapper.selectList(null);
+        if (!StringUtils.isEmpty(menus)) {
+            PageInfo<Menu> menuPageInfo = new PageInfo<>(menus);
+            return RespBean.ok("分页查询成功！", menuPageInfo);
+        }
+        return RespBean.error("查询失败");
+    }
+
+    @GetMapping("/pageHelperMap")
+    public RespBean pageHelperNew(@RequestParam Map<Object, Object> map) {
+        PageHelper.startPage(Integer.parseInt((String)map.get("pn")), Integer.parseInt((String)map.get("pg")));
+//        System.out.println(map.get("pn") instanceof String);
+//        for (Object o : map.keySet()) {
+//            System.out.println(o instanceof String);
+//        }
+//        PageHelper.startPage(((Integer) map.get("pn")), ((Integer) map.get("pg")));
+        List<Menu> menus = menuMapper.selectList(null);
+        if (!StringUtils.isEmpty(menus)) {
+            PageInfo<Menu> menuPageInfo = new PageInfo<>(menus);
+            return RespBean.ok("分页查询成功！", menuPageInfo);
+        }
+        return RespBean.error("查询失败");
+    }
+
+    @GetMapping("/pageHelperMap1")
+    public RespBean pageHelperNew1(@RequestBody Map<String, Integer> map) {
+        PageHelper.startPage(map.get("pn"),  map.get("pg"));
+        List<Menu> menus = menuMapper.selectList(null);
+        if (!StringUtils.isEmpty(menus)) {
+            PageInfo<Menu> menuPageInfo = new PageInfo<>(menus);
+            return RespBean.ok("分页查询成功！", menuPageInfo);
+        }
+        return RespBean.error("查询失败");
+    }
+
+    @GetMapping("/test")
+    public RespBean test(@RequestParam("str") String str,@RequestParam("in") Integer in){
+        System.out.println(str instanceof String);
+        System.out.println(in instanceof Integer);
+        return RespBean.ok("ceshi");
+    }
+
+    @GetMapping("/testMap")
+    public RespBean testMap(@RequestParam Map map){
+        System.out.println(map.get("str") instanceof String);
+        System.out.println(map.get("in") instanceof Integer);
+        return RespBean.ok("ceshi");
     }
 }
