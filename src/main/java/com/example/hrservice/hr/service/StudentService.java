@@ -35,6 +35,10 @@ public class StudentService {
        return studentMapper.save(data);
     }
 
+    public int insert(Student student) {
+       return  studentMapper.insert(student);
+    }
+
 
 //    public Integer batch(List<Model> data) {
 //       return studentMapper.batch(data);

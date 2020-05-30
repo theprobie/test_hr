@@ -321,15 +321,22 @@ public class HelloController {
 
     @GetMapping("/test")
     public RespBean test(@RequestParam("str") String str,@RequestParam("in") Integer in){
-        System.out.println(str instanceof String);
-        System.out.println(in instanceof Integer);
+        System.out.println(str instanceof String);//true
+        System.out.println(in instanceof Integer);//true
         return RespBean.ok("ceshi");
     }
 
     @GetMapping("/testMap")
     public RespBean testMap(@RequestParam Map map){
-        System.out.println(map.get("str") instanceof String);
-        System.out.println(map.get("in") instanceof Integer);
+        System.out.println(map.get("str") instanceof String);//true
+        System.out.println(map.get("in") instanceof Integer);//false
+        return RespBean.ok("ceshi");
+    }
+
+    @GetMapping("/testMap1")
+    public RespBean testMap1(@RequestParam Map<String,Integer> map){
+        System.out.println(map.get("str") instanceof Integer);//false
+        System.out.println(map.get("in") instanceof Integer);//false
         return RespBean.ok("ceshi");
     }
 }

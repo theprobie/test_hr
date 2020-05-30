@@ -1,6 +1,8 @@
 package com.example.hrservice.hr.model;
 
-public class Role {
+import java.io.Serializable;
+
+public class Role implements Serializable {
     private Integer id;
 
     private String name;

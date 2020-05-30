@@ -51,7 +51,10 @@ public class Menuservice {
     }
 
     public List<Menu> getMenuByMP() {
+        //查询出所有的菜单
         List<Menu> menus = menuMapper.selectList(null);
+        //首先使用stream流（filter）过滤出ParentId=1的菜单，然后使用map映射设置children属性(子菜单)
+        //使用getChildren(menu, menus)递归获得子菜单，其中menu代表当前菜单，menus代表第一步查出的所有菜单
         List<Menu> collect = menus.stream().filter((menu) -> {
             return (menu.getParentId() == null ? 0 : menu.getParentId()) == 1;
             //parentId是integer，可能为空，如果直接写menu.getParentId() == 1会造成空指针异常

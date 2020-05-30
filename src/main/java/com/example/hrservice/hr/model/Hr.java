@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Hr implements UserDetails {
+public class Hr implements UserDetails, Serializable {
     private Integer id;
 
     private String name;
