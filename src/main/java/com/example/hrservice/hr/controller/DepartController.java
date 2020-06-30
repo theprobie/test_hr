@@ -16,6 +16,7 @@ public class DepartController {
 
     @Autowired
     DepartService departService;
+    //测试新版
 
     @GetMapping("/")
     public List<Department> getAllDepartments() {
